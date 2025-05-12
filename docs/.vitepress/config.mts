@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base: "/cindy_doc/", // 需要 / 開頭和結尾
   title: "cindy's doc",
   description: "doc of code",
   themeConfig: {
