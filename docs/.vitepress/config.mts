@@ -9,21 +9,22 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       // { text: 'Home', link: '/' },
-      { text: 'Product', link: '/fx2_overview' }
+      { text: 'Product', link: '/memo' }
     ],
 
     sidebar: [
       {
         text: 'Product',
         items: [
+          { text: 'memo', link: '/memo' },
           { text: 'fx2_overview', link: '/fx2_overview' },
-          { text: 'spark_overview', link: '/spark_overview' }
+          { text: 'spark_overview', link: '/spark_overview' },
+          { text: 'new_infra_using_time_overview', link: '/new_infra_using_time_overview' }
         ]
       }
-    ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ]
+    // socialLinks: [
+    //   { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+    // ]
   }
 })

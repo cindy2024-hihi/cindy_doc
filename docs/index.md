@@ -8,15 +8,15 @@ hero:
   tagline: 
   actions:
     - theme: brand
-      text: fx2_overview
+      text: test1
       link: /fx2_overview
     - theme: alt
-      text: spark_overview
+      text: test2
       link: /spark_overview
 
-features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+# features:
+#   - title: Feature A
+#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 #  - title: Feature B
 #    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 #  - title: Feature C
