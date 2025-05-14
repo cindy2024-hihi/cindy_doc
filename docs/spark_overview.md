@@ -61,8 +61,6 @@
 - 用戶每天使用次數 (day_times)
 - 總使用時間 (using_time)，單位為分鐘
 - 平均每次使用的時間 (avg_day_times_time)
-- 應用打開的總時間 (open_app_time)
-- 使用時間百分比 (usepercent)
 
 ### 3. 流失率計算 (`weekly_spark_app_churn_rate`)
 
@@ -80,12 +78,11 @@
 - 分類用戶類型（流失用戶、休眠用戶、持續使用的用戶）
 
 **關鍵指標：**
-- 用戶首次使用距今的天數 (r_1st_day)
-- 用戶最後使用距今的天數 (r)
-- 用戶的使用天數 (f)
-- 用戶的使用時間範圍 (lvt)
-- 用戶的平均使用間隔 (gap)
-- 用戶類型分類 (type)：流失用戶 (R)、休眠用戶 (S)、活躍用戶 (E)
+- 用戶首次使用距今的天數 
+- 用戶最後使用距今的天數 
+- 用戶的使用天數 
+- 用戶的使用時間範圍 
+- 用戶的平均使用間隔
 
 ### 4. 留存率計算 (`product_spark_weekly_update_retention_rate`)
 
@@ -102,7 +99,6 @@
 **關鍵指標：**
 - 用戶留存率 (retention_rate)
 - 首次活躍用戶數量 (cohort_users)
-- 第 n 天/週活躍用戶數量
 
 ### 5. 整體留存率計算 (`weekly_spark_app_retention_rate_okr`)
 
@@ -154,8 +150,7 @@ flowchart TD
     %% 用戶屬性處理
     subgraph UserProperty[product_all_weekly_update_user_property]
         UP1[提取 Spark 用戶數據] --> UP2[處理用戶屬性]
-        UP2 --> UP3[聚合用戶屬性]
-        UP3 --> UP4[處理設備型號]
+        UP2 --> UP3[處理設備型號]
     end
     
     %% 輸出到 ga_users_property
@@ -180,8 +175,7 @@ flowchart TD
     DAILY_USING_TIME --> ChurnRate
     
     subgraph ChurnRate[product_spark_weekly_update_churn_rate]
-        CR1[獲取用戶首次使用日期] --> CR2[計算用戶活躍情況]
-        CR2 --> CR3[計算使用天數]
+        CR1[獲取用戶首次使用日期] --> CR2[計算使用天數]
         CR3 --> CR4[計算使用時間範圍]
         CR4 --> CR5[計算平均使用間隔]
         CR5 --> CR6[分類用戶類型]
@@ -196,13 +190,7 @@ flowchart TD
         RR1[計算週活躍用戶] --> RR2[分類新/老用戶]
         RR2 --> RR3[計算每週用戶數量]
         RR3 --> RR4[計算週留存率]
-        
-        RR5[計算日活躍用戶] --> RR6[分類新/老用戶]
-        RR6 --> RR7[計算每日用戶數量]
-        RR7 --> RR8[計算日留存率]
-        
-        RR4 --> RR9[合併留存率結果]
-        RR8 --> RR9
+        RR4 --> RR5[合併留存率結果]
     end
     
     %% 輸出到 weekly_spark_app_retention_rate
@@ -320,7 +308,6 @@ flowchart TD
 - 過濾條件: daterange="W" (週數據), type="ALL" (所有用戶), n_day=1 (第 1 週留存)
 - 按 daterange 和 type 分組
 - 計算平均留存率 (avg_retentionrate)
-- 計算事件日期 (event_date) = 最大首次日期 (first_date) + 7 天
 
 分析結果輸出到 `nimble-net-279805.PG_Product.weekly_spark_app_retention_rate_okr` 表，提供整體留存率的統計。
 
@@ -328,9 +315,7 @@ flowchart TD
 
 這個步驟計算 Spark 應用的平均使用時間：
 - 從 `nimble-net-279805.PG_Product.ga_users_property` 表中獲取用戶的地區信息 (region)
-- 過濾條件: channel="spark_app" (Spark 應用用戶)
 - 從 `nimble-net-279805.PG_Product.ga_users_day_using_time` 表中獲取用戶的使用數據
-- 過濾條件: using_time > 0 (有使用時間), event_date = 上週的開始日期
 - 關聯用戶地區信息
 - 計算每個用戶的平均每日使用時間 (day_avg_using_time)
 - 按用戶 ID、事件日期和地區分組
